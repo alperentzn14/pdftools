@@ -27,7 +27,18 @@ void main() async {
   AdManager.instance.loadBannerAd();
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('tr'), Locale('en')],
+      supportedLocales: const [
+        Locale('tr'),
+        Locale('en'),
+        Locale('de'),
+        Locale('zh'),
+        Locale('es'),
+        Locale('fr'),
+        Locale('ru'),
+        Locale('pt'),
+        Locale('ja'),
+        Locale('hi'),
+      ],
       path: 'assets/translations',
       fallbackLocale: const Locale('tr'),
       child: const MyApp(),

@@ -1,5 +1,5 @@
 {
-  "app_title": "PDF Tools",
+  "app_title": "PDFly Tools",
   "pick_file": "Pick File",
   "pick_files": "Pick Files",
   "pick_image": "Pick Image",
@@ -19,7 +19,7 @@
   "share_all": "Share All",
   "output_files": "Output Files",
   "clear": "Clear",
-  "change_language": "Türkçeye Geç",
+  "change_language": "Turkish",
   "est_time": "~{sec} sec",
   "ops": {
     "ocr_to_pdf": "OCR Scanner",
@@ -84,5 +84,17 @@
     "title": "PDF → Image Results",
     "pages_done": "{count} pages converted",
     "share_all": "Share All"
+  },
+  "sign": {
+    "title": "Sign PDF",
+    "clear_tip": "Clear Signature",
+    "pick_pdf_first": "Please select a PDF first",
+    "draw_first": "Please draw your signature first",
+    "saved": "Signed PDF saved",
+    "no_pdf": "No PDF selected",
+    "draw_label": "Draw your signature below:",
+    "hint": "Signature will be added to the bottom-right of the last page.",
+    "clear_btn": "Clear",
+    "add_btn": "Add to PDF"
   }
 }

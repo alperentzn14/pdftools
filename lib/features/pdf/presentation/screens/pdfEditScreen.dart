@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pdfconverter/features/pdf/presentation/bloc/pdfBloc.dart';
 import 'package:pdfconverter/features/pdf/presentation/bloc/pdfEvent.dart';
 import 'package:pdfconverter/features/pdf/presentation/bloc/pdfState.dart';
+import 'package:pdfconverter/features/pdf/presentation/screens/batchResultScreen.dart';
 
 class PdfEditScreen extends StatefulWidget {
   final int initialTab;
@@ -72,10 +73,6 @@ class _PdfEditScreenState extends State<PdfEditScreen>
     }
   }
 
-  void _showSuccess(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
-  }
-
   void _showError(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(msg), backgroundColor: Colors.red.shade700),
@@ -87,9 +84,27 @@ class _PdfEditScreenState extends State<PdfEditScreen>
     return BlocListener<PdfBloc, PdfState>(
       listener: (context, state) {
         if (state is PdfSuccess) {
-          _showSuccess('edit.done'.tr());
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('edit.done'.tr()),
+              duration: const Duration(seconds: 8),
+              action: SnackBarAction(
+                label: 'open'.tr(),
+                onPressed: () =>
+                    context.read<PdfBloc>().add(OpenFileEvent(state.filePath)),
+              ),
+            ),
+          );
         } else if (state is PdfBatchSuccess) {
-          _showSuccess('edit.split_done'.tr(namedArgs: {'count': state.filePaths.length.toString()}));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider.value(
+                value: context.read<PdfBloc>(),
+                child: BatchResultScreen(filePaths: state.filePaths),
+              ),
+            ),
+          );
         } else if (state is PdfError) {
           _showError(state.message);
         }
@@ -149,6 +164,8 @@ class _PdfEditScreenState extends State<PdfEditScreen>
                 final pages = _deleteController.text.trim().split(',')
                     .map((s) => int.tryParse(s.trim()))
                     .whereType<int>()
+                    .where((p) => p >= 1)
+                    .map((p) => p - 1) // convert 1-based user input → 0-based index
                     .toList();
                 if (pages.isEmpty) { _showError('edit.delete_hint_error'.tr()); return; }
                 context.read<PdfBloc>().add(DeletePagesEvent(_deletePath!, pages));

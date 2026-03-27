@@ -84,5 +84,17 @@
     "title": "PDF → Resim Sonuçları",
     "pages_done": "{count} sayfa dönüştürüldü",
     "share_all": "Tümünü Paylaş"
+  },
+  "sign": {
+    "title": "İmza + PDF Düzenleme",
+    "clear_tip": "İmzayı Temizle",
+    "pick_pdf_first": "Önce bir PDF seçin",
+    "draw_first": "Önce imzanızı çizin",
+    "saved": "İmzalı PDF kaydedildi",
+    "no_pdf": "PDF seçilmedi",
+    "draw_label": "İmzanızı aşağıya çizin:",
+    "hint": "İmza, PDF'in son sayfasının sağ-alt köşesine eklenir.",
+    "clear_btn": "Temizle",
+    "add_btn": "PDF'e Ekle"
   }
 }

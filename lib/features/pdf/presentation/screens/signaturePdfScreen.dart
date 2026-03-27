@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
@@ -47,13 +48,13 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
   Future<void> _saveSignedPdf() async {
     if (_pdfPath == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Önce bir PDF seçin')),
+        SnackBar(content: Text('sign.pick_pdf_first'.tr())),
       );
       return;
     }
     if (_controller.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Önce imzanızı çizin')),
+        SnackBar(content: Text('sign.draw_first'.tr())),
       );
       return;
     }
@@ -61,7 +62,7 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
     setState(() => _isSaving = true);
     try {
       final signatureBytes = await _controller.toPngBytes();
-      if (signatureBytes == null) throw Exception('İmza alınamadı');
+      if (signatureBytes == null) throw Exception('sign.draw_first'.tr());
 
       final outPath = await PdfSignatureService().stampSignature(
         pdfPath: _pdfPath!,
@@ -70,13 +71,13 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('İmzalı PDF kaydedildi')),
+        SnackBar(content: Text('sign.saved'.tr())),
       );
       await OpenFilex.open(outPath);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Hata: $e')),
+        SnackBar(content: Text('${'errors.file_open_failed'.tr(namedArgs: {'path': ''})} $e')),
       );
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -86,25 +87,24 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
   @override
   Widget build(BuildContext context) {
     final fileName = _pdfPath != null
-        ? _pdfPath!.split('/').last
-        : 'PDF seçilmedi';
+        ? _pdfPath!.split('/').last.split('\\').last
+        : 'sign.no_pdf'.tr();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('İmza + PDF Düzenleme'),
+        title: Text('sign.title'.tr()),
         backgroundColor: const Color(0xFF1E3A8A),
         foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_outline),
-            tooltip: 'İmzayı Temizle',
+            tooltip: 'sign.clear_tip'.tr(),
             onPressed: () => _controller.clear(),
           ),
         ],
       ),
       body: Column(
         children: [
-          // PDF seçim alanı
           InkWell(
             onTap: _pickPdf,
             child: Container(
@@ -133,20 +133,18 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
             ),
           ),
 
-          // İmza alanı başlığı
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'İmzanızı aşağıya çizin:',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                'sign.draw_label'.tr(),
+                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
               ),
             ),
           ),
           const SizedBox(height: 8),
 
-          // İmza pedi
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -166,17 +164,15 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
           ),
           const SizedBox(height: 8),
 
-          // Açıklama
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Text(
-              'İmza, PDF\'in son sayfasının sağ-alt köşesine eklenir.',
-              style: TextStyle(color: Colors.grey, fontSize: 12),
+              'sign.hint'.tr(),
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
           ),
           const SizedBox(height: 12),
 
-          // Butonlar
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
             child: Row(
@@ -184,7 +180,7 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () => _controller.clear(),
-                    child: const Text('Temizle'),
+                    child: Text('sign.clear_btn'.tr()),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -204,7 +200,7 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text('PDF\'e Ekle'),
+                        : Text('sign.add_btn'.tr()),
                   ),
                 ),
               ],

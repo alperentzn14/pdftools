@@ -49,6 +49,80 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  static const _languages = [
+    {'code': 'tr', 'name': 'Türkçe',    'flag': '🇹🇷'},
+    {'code': 'en', 'name': 'English',   'flag': '🇬🇧'},
+    {'code': 'de', 'name': 'Deutsch',   'flag': '🇩🇪'},
+    {'code': 'zh', 'name': '中文',       'flag': '🇨🇳'},
+    {'code': 'es', 'name': 'Español',   'flag': '🇪🇸'},
+    {'code': 'fr', 'name': 'Français',  'flag': '🇫🇷'},
+    {'code': 'ru', 'name': 'Русский',   'flag': '🇷🇺'},
+    {'code': 'pt', 'name': 'Português', 'flag': '🇧🇷'},
+    {'code': 'ja', 'name': '日本語',     'flag': '🇯🇵'},
+    {'code': 'hi', 'name': 'हिन्दी',    'flag': '🇮🇳'},
+  ];
+
+  void _showLanguagePicker(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        final current = context.locale.languageCode;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(ctx).height * 0.75,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 12),
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _languages.length,
+                  itemBuilder: (_, i) {
+                    final lang = _languages[i];
+                    final isSelected = lang['code'] == current;
+                    return ListTile(
+                      leading: Text(lang['flag']!, style: const TextStyle(fontSize: 24)),
+                      title: Text(
+                        lang['name']!,
+                        style: TextStyle(
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          color: isSelected ? const Color(0xFF1E3A8A) : null,
+                        ),
+                      ),
+                      trailing: isSelected
+                          ? const Icon(Icons.check, color: Color(0xFF1E3A8A))
+                          : null,
+                      onTap: () {
+                        context.setLocale(Locale(lang['code']!));
+                        Navigator.pop(ctx);
+                      },
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: MediaQuery.paddingOf(ctx).bottom + 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void _clearSelection() {
     setState(() {
       _selectedFiles = [];
@@ -70,20 +144,31 @@ class _HomeScreenState extends State<HomeScreen> {
     } else if (request is OpOpenMergeScreenRequest) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (_) => const PdfEditScreen(initialTab: 0)),
+        MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: bloc,
+            child: const PdfEditScreen(initialTab: 0),
+          ),
+        ),
       );
     } else if (request is OpOpenSplitScreenRequest) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => PdfEditScreen(initialTab: 1, pdfPath: request.path),
+          builder: (_) => BlocProvider.value(
+            value: bloc,
+            child: PdfEditScreen(initialTab: 1, pdfPath: request.path),
+          ),
         ),
       );
     } else if (request is OpOpenDeletePagesRequest) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => PdfEditScreen(initialTab: 2, pdfPath: request.path),
+          builder: (_) => BlocProvider.value(
+            value: bloc,
+            child: PdfEditScreen(initialTab: 2, pdfPath: request.path),
+          ),
         ),
       );
     } else if (request is OpSignPdfRequest) {
@@ -197,23 +282,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        // Dil değiştirme
-                        TextButton(
-                          onPressed: () {
-                            final current = context.locale;
-                            context.setLocale(
-                              current.languageCode == 'tr'
-                                  ? const Locale('en')
-                                  : const Locale('tr'),
-                            );
-                          },
-                          child: Text(
-                            'change_language'.tr(),
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 12,
-                            ),
-                          ),
+                        IconButton(
+                          icon: const Icon(Icons.language, color: Colors.white70),
+                          tooltip: 'change_language'.tr(),
+                          onPressed: () => _showLanguagePicker(context),
                         ),
                       ],
                     ),
