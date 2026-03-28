@@ -104,7 +104,7 @@ class AdManager {
     _bannerAd = null;
     _isBannerLoaded = false;
     _bannerAd = BannerAd(
-      adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+      adUnitId: 'ca-app-pub-2693603012319986~7354830774',
       size: AdSize.banner,
       listener: BannerAdListener(
         onAdLoaded: (_) => _isBannerLoaded = true,
@@ -138,7 +138,7 @@ class AdManager {
     _interstitialAd = null;
     _isInterstitialLoaded = false;
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+      adUnitId: 'ca-app-pub-2693603012319986~7354830774',
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(
         onAdLoaded: (ad) {
@@ -182,7 +182,7 @@ class AdManager {
     _rewardedAd = null;
     _isRewardedLoaded = false;
     RewardedAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+      adUnitId: 'ca-app-pub-2693603012319986~7354830774',
       request: const AdRequest(),
       rewardedAdLoadCallback: RewardedAdLoadCallback(
         onAdLoaded: (ad) {

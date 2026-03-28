@@ -444,7 +444,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: GradientAdBanner(
-        adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+        adUnitId: 'ca-app-pub-2693603012319986~7354830774',
       ),
     );
   }
