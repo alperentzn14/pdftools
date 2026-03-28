@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(flutter pub:*)",
-      "Bash(flutter analyze:*)"
+      "Bash(flutter analyze:*)",
+      "Bash(grep -r PdfCompressionLevel c:/Users/alperen.tuzun/source/repos/Pdf_converter/pdfconverter/.dart_tool --include=*.dart -l)"
     ]
   }
 }

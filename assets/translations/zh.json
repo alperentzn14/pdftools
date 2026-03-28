@@ -2,7 +2,7 @@
   "app_title": "PDF工具",
   "pick_file": "选择文件",
   "pick_files": "选择文件",
-  "pick_image": "选择图片",
+  "pick_image": "选择图片（可多选）",
   "convert": "转换",
   "share": "分享",
   "open": "打开",
@@ -23,7 +23,7 @@
   "est_time": "约{sec}秒",
   "ops": {
     "ocr_to_pdf": "OCR扫描仪",
-    "ocr_to_pdf_sub": "从图片提取文字→PDF",
+    "ocr_to_pdf_sub": "从单张/多张图片提取文字→PDF",
     "word_to_pdf": "Word→PDF",
     "word_to_pdf_sub": "将.docx文件转换为PDF",
     "pdf_to_word": "PDF→Word",
@@ -47,7 +47,9 @@
     "share_file": "快速分享",
     "share_file_sub": "通过微信/邮件分享",
     "batch_convert": "批量转换",
-    "batch_convert_sub": "转换{count}个文件"
+    "batch_convert_sub": "转换{count}个文件",
+    "compress_pdf": "压缩PDF",
+    "compress_pdf_sub": "减小文件大小"
   },
   "errors": {
     "no_text_extracted": "无法从此PDF中提取文字。\n请使用OCR扫描仪处理扫描版PDF。",
@@ -84,6 +86,15 @@
     "title": "PDF→图片结果",
     "pages_done": "已转换{count}页",
     "share_all": "全部分享"
+  },
+  "compress": {
+    "title": "压缩级别",
+    "light": "轻度",
+    "light_sub": "快速，减少10-20%",
+    "medium": "中度",
+    "medium_sub": "均衡，减少20-40%",
+    "max": "最大",
+    "max_sub": "最小体积，耗时较长"
   },
   "sign": {
     "title": "签署PDF",

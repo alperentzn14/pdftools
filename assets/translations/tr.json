@@ -2,7 +2,7 @@
   "app_title": "PDF Araçları",
   "pick_file": "Dosya Seç",
   "pick_files": "Dosyaları Seç",
-  "pick_image": "Resim Seç",
+  "pick_image": "Resim(ler) Seç",
   "convert": "Dönüştür",
   "share": "Paylaş",
   "open": "Aç",
@@ -23,7 +23,7 @@
   "est_time": "~{sec} sn",
   "ops": {
     "ocr_to_pdf": "OCR Tarayıcı",
-    "ocr_to_pdf_sub": "Resimden metin → PDF",
+    "ocr_to_pdf_sub": "Tek/çoklu resimden metin oku → PDF",
     "word_to_pdf": "Word → PDF",
     "word_to_pdf_sub": ".docx dosyasını PDF'e dönüştür",
     "pdf_to_word": "PDF → Word",
@@ -47,7 +47,9 @@
     "share_file": "Hızlı Paylaşım",
     "share_file_sub": "Dosyayı WhatsApp/Mail ile paylaş",
     "batch_convert": "Toplu Dönüştür",
-    "batch_convert_sub": "{count} dosyayı dönüştür"
+    "batch_convert_sub": "{count} dosyayı dönüştür",
+    "compress_pdf": "PDF Sıkıştır",
+    "compress_pdf_sub": "Dosya boyutunu küçült"
   },
   "errors": {
     "no_text_extracted": "Bu PDF'den metin çıkarılamadı.\nTaranmış PDF için OCR Tarayıcı kullanın.",
@@ -84,6 +86,15 @@
     "title": "PDF → Resim Sonuçları",
     "pages_done": "{count} sayfa dönüştürüldü",
     "share_all": "Tümünü Paylaş"
+  },
+  "compress": {
+    "title": "Sıkıştırma Seviyesi",
+    "light": "Hafif",
+    "light_sub": "Hızlı işlem, %10-20 küçülme",
+    "medium": "Orta",
+    "medium_sub": "Dengeli, %20-40 küçülme",
+    "max": "Maksimum",
+    "max_sub": "En küçük boyut, daha uzun sürer"
   },
   "sign": {
     "title": "İmza + PDF Düzenleme",

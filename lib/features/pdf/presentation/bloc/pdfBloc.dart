@@ -25,6 +25,7 @@ class PdfBloc extends Bloc<PdfEvent, PdfState> {
     on<BatchConvertEvent>(_batchConvert);
     on<AdvancedPdfToExcelEvent>(_advancedPdfToExcel);
     on<OCRBatchEvent>(_ocrBatch);
+    on<CompressPdfEvent>(_compressPdf);
   }
 
   Future<void> _ocrToPdf(OCRToPdfEvent event, Emitter emit) async {
@@ -85,12 +86,14 @@ class PdfBloc extends Bloc<PdfEvent, PdfState> {
   Future<void> _open(OpenFileEvent event, Emitter emit) async {
     final result = await OpenFilex.open(event.path);
     if (result.type != ResultType.done) {
-      emit(PdfError(
-        'Dosya oluşturuldu fakat açılamadı.\n'
-        'Uyumlu bir uygulama yüklü olmayabilir.\n'
-        'Paylaşım ile başka uygulamada açabilirsiniz.\n'
-        'Konum: ${event.path}',
-      ));
+      emit(
+        PdfError(
+          'Dosya oluşturuldu fakat açılamadı.\n'
+          'Uyumlu bir uygulama yüklü olmayabilir.\n'
+          'Paylaşım ile başka uygulamada açabilirsiniz.\n'
+          'Konum: ${event.path}',
+        ),
+      );
     }
   }
 
@@ -157,7 +160,10 @@ class PdfBloc extends Bloc<PdfEvent, PdfState> {
   Future<void> _addSignature(AddPdfSignatureEvent event, Emitter emit) async {
     emit(PdfLoading());
     try {
-      final path = await repo.stampSignature(event.pdfPath, event.signatureBytes);
+      final path = await repo.stampSignature(
+        event.pdfPath,
+        event.signatureBytes,
+      );
       emit(PdfSuccess(filePath: path));
     } catch (e) {
       emit(PdfError(e.toString()));
@@ -184,11 +190,13 @@ class PdfBloc extends Bloc<PdfEvent, PdfState> {
     final results = <String>[];
     for (int i = 0; i < event.filePaths.length; i++) {
       final path = event.filePaths[i];
-      emit(PdfBatchProgress(
-        completed: i,
-        total: total,
-        currentFileName: path.split('/').last.split('\\').last,
-      ));
+      emit(
+        PdfBatchProgress(
+          completed: i,
+          total: total,
+          currentFileName: path.split('/').last.split('\\').last,
+        ),
+      );
       try {
         final outPath = await repo.convertSingle(path, event.type);
         results.add(outPath);
@@ -200,16 +208,34 @@ class PdfBloc extends Bloc<PdfEvent, PdfState> {
   }
 
   Future<void> _ocrBatch(OCRBatchEvent event, Emitter emit) async {
-    emit(PdfLoading());
+    final total = event.imagePaths.length;
+    emit(PdfBatchProgress(completed: 0, total: total, currentFileName: ''));
     try {
       final buffer = StringBuffer();
-      for (final imagePath in event.imagePaths) {
+      for (int i = 0; i < event.imagePaths.length; i++) {
+        final imagePath = event.imagePaths[i];
+        final fileName = imagePath.split('/').last.split('\\').last;
+        emit(PdfBatchProgress(
+          completed: i,
+          total: total,
+          currentFileName: fileName,
+        ));
+        if (i > 0) buffer.writeln('\n');
         final text = await repo.extractTextFromImage(imagePath);
-        buffer.writeln(text);
-        buffer.writeln('--- Sayfa ${event.imagePaths.indexOf(imagePath) + 1} ---');
+        buffer.writeln(text.trim());
       }
       final pdfPath = await repo.textToPdf(buffer.toString());
       emit(PdfSuccess(filePath: pdfPath));
+    } catch (e) {
+      emit(PdfError(e.toString()));
+    }
+  }
+
+  Future<void> _compressPdf(CompressPdfEvent event, Emitter emit) async {
+    emit(PdfLoading());
+    try {
+      final path = await repo.compressPdf(event.pdfPath, event.level);
+      emit(PdfSuccess(filePath: path));
     } catch (e) {
       emit(PdfError(e.toString()));
     }

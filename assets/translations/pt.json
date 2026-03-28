@@ -2,7 +2,7 @@
   "app_title": "Ferramentas PDF",
   "pick_file": "Escolher arquivo",
   "pick_files": "Escolher arquivos",
-  "pick_image": "Escolher imagem",
+  "pick_image": "Escolher imagem(ns)",
   "convert": "Converter",
   "share": "Compartilhar",
   "open": "Abrir",
@@ -23,7 +23,7 @@
   "est_time": "~{sec} s",
   "ops": {
     "ocr_to_pdf": "Scanner OCR",
-    "ocr_to_pdf_sub": "Extrair texto de imagem → PDF",
+    "ocr_to_pdf_sub": "Extrair texto de imagem(ns) → PDF",
     "word_to_pdf": "Word → PDF",
     "word_to_pdf_sub": "Converter arquivo .docx em PDF",
     "pdf_to_word": "PDF → Word",
@@ -47,7 +47,9 @@
     "share_file": "Compartilhar rápido",
     "share_file_sub": "Compartilhar via WhatsApp/Email",
     "batch_convert": "Conversão em lote",
-    "batch_convert_sub": "Converter {count} arquivos"
+    "batch_convert_sub": "Converter {count} arquivos",
+    "compress_pdf": "Comprimir PDF",
+    "compress_pdf_sub": "Reduzir tamanho do arquivo"
   },
   "errors": {
     "no_text_extracted": "Não foi possível extrair texto deste PDF.\nUse o Scanner OCR para PDFs digitalizados.",
@@ -84,6 +86,15 @@
     "title": "Resultados PDF → Imagem",
     "pages_done": "{count} páginas convertidas",
     "share_all": "Compartilhar tudo"
+  },
+  "compress": {
+    "title": "Nível de compressão",
+    "light": "Leve",
+    "light_sub": "Rápido, 10-20% menor",
+    "medium": "Médio",
+    "medium_sub": "Equilibrado, 20-40% menor",
+    "max": "Máximo",
+    "max_sub": "Menor tamanho, mais lento"
   },
   "sign": {
     "title": "Assinar PDF",

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:pdfconverter/features/pdf/data/repositories/advancedExcelService.dart';
+import 'package:pdfconverter/features/pdf/data/repositories/pdfCompressService.dart';
 import 'package:pdfconverter/features/pdf/data/repositories/excelPdfService.dart';
 import 'package:pdfconverter/features/pdf/data/repositories/excelService.dart';
 import 'package:pdfconverter/features/pdf/data/repositories/imagePdfService.dart';
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
             PdfEditService(),
             AdvancedExcelService(),
             PdfSignatureService(),
+            PdfCompressService(),
           ),
         ),
         child: const HomeScreen(),

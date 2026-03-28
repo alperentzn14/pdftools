@@ -2,7 +2,7 @@
   "app_title": "PDF Инструменты",
   "pick_file": "Выбрать файл",
   "pick_files": "Выбрать файлы",
-  "pick_image": "Выбрать изображение",
+  "pick_image": "Выбрать изображения",
   "convert": "Конвертировать",
   "share": "Поделиться",
   "open": "Открыть",
@@ -23,7 +23,7 @@
   "est_time": "~{sec} с",
   "ops": {
     "ocr_to_pdf": "OCR Сканер",
-    "ocr_to_pdf_sub": "Извлечь текст из изображения → PDF",
+    "ocr_to_pdf_sub": "Извлечь текст из изображений → PDF",
     "word_to_pdf": "Word → PDF",
     "word_to_pdf_sub": "Конвертировать .docx в PDF",
     "pdf_to_word": "PDF → Word",
@@ -47,7 +47,9 @@
     "share_file": "Быстрый обмен",
     "share_file_sub": "Поделиться через WhatsApp/Email",
     "batch_convert": "Пакетная конвертация",
-    "batch_convert_sub": "Конвертировать {count} файлов"
+    "batch_convert_sub": "Конвертировать {count} файлов",
+    "compress_pdf": "Сжать PDF",
+    "compress_pdf_sub": "Уменьшить размер файла"
   },
   "errors": {
     "no_text_extracted": "Не удалось извлечь текст из этого PDF.\nИспользуйте OCR Сканер для сканированных PDF.",
@@ -84,6 +86,15 @@
     "title": "Результаты PDF → Изображение",
     "pages_done": "{count} страниц конвертировано",
     "share_all": "Поделиться всем"
+  },
+  "compress": {
+    "title": "Уровень сжатия",
+    "light": "Лёгкий",
+    "light_sub": "Быстро, 10-20% меньше",
+    "medium": "Средний",
+    "medium_sub": "Сбалансированный, 20-40% меньше",
+    "max": "Максимальный",
+    "max_sub": "Минимальный размер, дольше"
   },
   "sign": {
     "title": "Подписать PDF",

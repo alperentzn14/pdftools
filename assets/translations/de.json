@@ -2,7 +2,7 @@
   "app_title": "PDF Werkzeuge",
   "pick_file": "Datei wählen",
   "pick_files": "Dateien wählen",
-  "pick_image": "Bild wählen",
+  "pick_image": "Bild(er) wählen",
   "convert": "Konvertieren",
   "share": "Teilen",
   "open": "Öffnen",
@@ -23,7 +23,7 @@
   "est_time": "~{sec} s",
   "ops": {
     "ocr_to_pdf": "OCR-Scanner",
-    "ocr_to_pdf_sub": "Text aus Bild → PDF",
+    "ocr_to_pdf_sub": "Text aus Bild(ern) → PDF",
     "word_to_pdf": "Word → PDF",
     "word_to_pdf_sub": ".docx in PDF umwandeln",
     "pdf_to_word": "PDF → Word",
@@ -47,7 +47,9 @@
     "share_file": "Schnell teilen",
     "share_file_sub": "Über WhatsApp/E-Mail teilen",
     "batch_convert": "Stapelkonvertierung",
-    "batch_convert_sub": "{count} Dateien konvertieren"
+    "batch_convert_sub": "{count} Dateien konvertieren",
+    "compress_pdf": "PDF komprimieren",
+    "compress_pdf_sub": "Dateigröße reduzieren"
   },
   "errors": {
     "no_text_extracted": "Aus diesem PDF konnte kein Text extrahiert werden.\nVerwenden Sie den OCR-Scanner für gescannte PDFs.",
@@ -84,6 +86,15 @@
     "title": "PDF → Bild Ergebnisse",
     "pages_done": "{count} Seiten konvertiert",
     "share_all": "Alle teilen"
+  },
+  "compress": {
+    "title": "Komprimierungsstufe",
+    "light": "Leicht",
+    "light_sub": "Schnell, 10-20% kleiner",
+    "medium": "Mittel",
+    "medium_sub": "Ausgewogen, 20-40% kleiner",
+    "max": "Maximum",
+    "max_sub": "Kleinste Größe, dauert länger"
   },
   "sign": {
     "title": "PDF signieren",

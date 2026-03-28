@@ -25,4 +25,7 @@ abstract class PdfRepository {
 
   // Toplu işlem için tek dosya dönüştürme
   Future<String> convertSingle(String filePath, ConversionType type);
+
+  // PDF sıkıştırma
+  Future<String> compressPdf(String pdfPath, int level);
 }

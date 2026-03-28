@@ -2,7 +2,7 @@
   "app_title": "PDFly Tools",
   "pick_file": "Pick File",
   "pick_files": "Pick Files",
-  "pick_image": "Pick Image",
+  "pick_image": "Pick Image(s)",
   "convert": "Convert",
   "share": "Share",
   "open": "Open",
@@ -23,7 +23,7 @@
   "est_time": "~{sec} sec",
   "ops": {
     "ocr_to_pdf": "OCR Scanner",
-    "ocr_to_pdf_sub": "Extract text from image → PDF",
+    "ocr_to_pdf_sub": "Extract text from image(s) → PDF",
     "word_to_pdf": "Word → PDF",
     "word_to_pdf_sub": "Convert .docx file to PDF",
     "pdf_to_word": "PDF → Word",
@@ -47,7 +47,9 @@
     "share_file": "Quick Share",
     "share_file_sub": "Share via WhatsApp/Email",
     "batch_convert": "Batch Convert",
-    "batch_convert_sub": "Convert {count} files"
+    "batch_convert_sub": "Convert {count} files",
+    "compress_pdf": "Compress PDF",
+    "compress_pdf_sub": "Reduce file size"
   },
   "errors": {
     "no_text_extracted": "No text could be extracted from this PDF.\nUse OCR Scanner for scanned PDFs.",
@@ -84,6 +86,15 @@
     "title": "PDF → Image Results",
     "pages_done": "{count} pages converted",
     "share_all": "Share All"
+  },
+  "compress": {
+    "title": "Compression Level",
+    "light": "Light",
+    "light_sub": "Fast, 10-20% size reduction",
+    "medium": "Medium",
+    "medium_sub": "Balanced, 20-40% size reduction",
+    "max": "Maximum",
+    "max_sub": "Smallest size, takes longer"
   },
   "sign": {
     "title": "Sign PDF",

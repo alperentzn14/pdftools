@@ -8,7 +8,6 @@ class OcrService {
     final processedFile = await ImagePreprocess.process(path);
     final inputImage = InputImage.fromFilePath(processedFile.path);
     final recognizedText = await textRecognizer.processImage(inputImage);
-
     return recognizedText.text;
   }
 

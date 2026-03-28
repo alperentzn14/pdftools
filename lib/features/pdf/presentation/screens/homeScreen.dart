@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pdfconverter/features/pdf/presentation/bloc/pdfBloc.dart';
 import 'package:pdfconverter/features/pdf/presentation/bloc/pdfEvent.dart';
 import 'package:pdfconverter/features/pdf/presentation/bloc/pdfState.dart';
@@ -34,19 +35,29 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _onImagesPicked(List<String> imagePaths) {
+    final newFiles = imagePaths.map(
+      (p) => PlatformFile(
+        name: p.split('/').last.split('\\').last,
+        path: p,
+        size: 0,
+      ),
+    );
     setState(() {
-      _selectedFiles =
-          imagePaths
-              .map(
-                (p) => PlatformFile(
-                  name: p.split('/').last.split('\\').last,
-                  path: p,
-                  size: 0,
-                ),
-              )
-              .toList();
-      _isImages = true;
+      if (_isImages) {
+        // Mevcut görüntü seçimine ekle (replace etme)
+        _selectedFiles = [..._selectedFiles, ...newFiles];
+      } else {
+        _selectedFiles = newFiles.toList();
+        _isImages = true;
+      }
     });
+  }
+
+  Future<void> _addMoreImages() async {
+    final images = await ImagePicker().pickMultiImage();
+    if (images.isNotEmpty) {
+      _onImagesPicked(images.map((x) => x.path).toList());
+    }
   }
 
   static const _languages = [
@@ -192,7 +203,59 @@ class _HomeScreenState extends State<HomeScreen> {
       bloc.add(OCRBatchEvent(request.paths));
     } else if (request is OpBatchRequest) {
       bloc.add(BatchConvertEvent(request.paths, request.type));
+    } else if (request is OpCompressPdfRequest) {
+      _showCompressionPicker(context, request.path);
     }
+  }
+
+  void _showCompressionPicker(BuildContext context, String pdfPath) {
+    final bloc = context.read<PdfBloc>();
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 40, height: 4,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade300,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Text(
+                'compress.title'.tr(),
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            _compressionTile(ctx, bloc, pdfPath, 0, 'compress.light'.tr(), 'compress.light_sub'.tr(), Icons.compress, Colors.green),
+            _compressionTile(ctx, bloc, pdfPath, 1, 'compress.medium'.tr(), 'compress.medium_sub'.tr(), Icons.compress, Colors.orange),
+            _compressionTile(ctx, bloc, pdfPath, 2, 'compress.max'.tr(), 'compress.max_sub'.tr(), Icons.compress, Colors.red),
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _compressionTile(BuildContext ctx, PdfBloc bloc, String path,
+      int level, String title, String subtitle, IconData icon, Color color) {
+    return ListTile(
+      leading: Icon(icon, color: color),
+      title: Text(title),
+      subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
+      onTap: () {
+        Navigator.pop(ctx);
+        bloc.add(CompressPdfEvent(path, level));
+      },
+    );
   }
 
   void _handleState(BuildContext context, PdfState state) {
@@ -295,7 +358,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   if (_selectedFiles.isNotEmpty && !_isProcessing(state))
                     _FileChipsRow(
                       files: _selectedFiles,
+                      isImages: _isImages,
                       onClear: _clearSelection,
+                      onAddMore: _addMoreImages,
                     ),
 
                   // Ana içerik
@@ -330,9 +395,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _FileChipsRow extends StatelessWidget {
   final List<PlatformFile> files;
+  final bool isImages;
   final VoidCallback onClear;
+  final VoidCallback onAddMore;
 
-  const _FileChipsRow({required this.files, required this.onClear});
+  const _FileChipsRow({
+    required this.files,
+    required this.isImages,
+    required this.onClear,
+    required this.onAddMore,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -356,6 +428,16 @@ class _FileChipsRow extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          // Görüntü seçiliyse "+" butonu — mevcut seçime resim ekler
+          if (isImages)
+            IconButton(
+              icon: const Icon(Icons.add_photo_alternate, color: Colors.white70, size: 20),
+              onPressed: onAddMore,
+              tooltip: 'pick_image'.tr(),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+            ),
+          const SizedBox(width: 4),
           IconButton(
             icon: const Icon(Icons.close, color: Colors.white54, size: 18),
             onPressed: onClear,

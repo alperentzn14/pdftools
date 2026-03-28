@@ -152,3 +152,12 @@ class OCRBatchEvent extends PdfEvent {
   @override
   List<Object?> get props => [imagePaths];
 }
+
+/// PDF Sıkıştır — level: 0=hafif, 1=orta, 2=maksimum
+class CompressPdfEvent extends PdfEvent {
+  final String pdfPath;
+  final int level;
+  const CompressPdfEvent(this.pdfPath, this.level);
+  @override
+  List<Object?> get props => [pdfPath, level];
+}

@@ -31,7 +31,8 @@ class WordReaderService {
     final buffer2 = StringBuffer();
     for (final line in withNewlines.split('\n')) {
       final lineMatches = regex.allMatches(line);
-      final lineText = lineMatches.map((m) => m.group(1) ?? '').join(' ').trim();
+      final lineText =
+          lineMatches.map((m) => m.group(1) ?? '').join(' ').trim();
       if (lineText.isNotEmpty) buffer2.writeln(lineText);
     }
 

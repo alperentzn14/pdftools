@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:pdfconverter/features/pdf/data/repositories/advancedExcelService.dart';
+import 'package:pdfconverter/features/pdf/data/repositories/pdfCompressService.dart';
 import 'package:pdfconverter/features/pdf/data/repositories/excelPdfService.dart';
 import 'package:pdfconverter/features/pdf/data/repositories/excelService.dart';
 import 'package:pdfconverter/features/pdf/data/repositories/imagePdfService.dart';
@@ -27,6 +28,7 @@ class PdfRepositoryImpl implements PdfRepository {
   final PdfEditService pdfEditService;
   final AdvancedExcelService advancedExcelService;
   final PdfSignatureService pdfSignatureService;
+  final PdfCompressService pdfCompressService;
 
   PdfRepositoryImpl(
     this.ocrService,
@@ -41,6 +43,7 @@ class PdfRepositoryImpl implements PdfRepository {
     this.pdfEditService,
     this.advancedExcelService,
     this.pdfSignatureService,
+    this.pdfCompressService,
   );
 
   @override
@@ -140,6 +143,11 @@ class PdfRepositoryImpl implements PdfRepository {
       case ConversionType.pdfToImages:
         return pdfToImages(filePath).then((paths) => paths.first);
     }
+  }
+
+  @override
+  Future<String> compressPdf(String pdfPath, int level) {
+    return pdfCompressService.compress(pdfPath, level: level);
   }
 
   @override

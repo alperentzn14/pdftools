@@ -2,7 +2,7 @@
   "app_title": "PDF टूल्स",
   "pick_file": "फ़ाइल चुनें",
   "pick_files": "फ़ाइलें चुनें",
-  "pick_image": "छवि चुनें",
+  "pick_image": "छवि(यां) चुनें",
   "convert": "कनवर्ट करें",
   "share": "शेयर करें",
   "open": "खोलें",
@@ -23,7 +23,7 @@
   "est_time": "~{sec} सेकंड",
   "ops": {
     "ocr_to_pdf": "OCR स्कैनर",
-    "ocr_to_pdf_sub": "छवि से टेक्स्ट निकालें → PDF",
+    "ocr_to_pdf_sub": "एक/अनेक छवियों से टेक्स्ट → PDF",
     "word_to_pdf": "Word → PDF",
     "word_to_pdf_sub": ".docx फ़ाइल को PDF में बदलें",
     "pdf_to_word": "PDF → Word",
@@ -47,7 +47,9 @@
     "share_file": "त्वरित शेयर",
     "share_file_sub": "WhatsApp/ईमेल से शेयर करें",
     "batch_convert": "बैच कनवर्ट",
-    "batch_convert_sub": "{count} फ़ाइलें कनवर्ट करें"
+    "batch_convert_sub": "{count} फ़ाइलें कनवर्ट करें",
+    "compress_pdf": "PDF संपीड़ित करें",
+    "compress_pdf_sub": "फ़ाइल आकार घटाएं"
   },
   "errors": {
     "no_text_extracted": "इस PDF से टेक्स्ट नहीं निकाला जा सका।\nस्कैन किए गए PDF के लिए OCR स्कैनर उपयोग करें।",
@@ -84,6 +86,15 @@
     "title": "PDF → छवि परिणाम",
     "pages_done": "{count} पृष्ठ कनवर्ट हुए",
     "share_all": "सभी शेयर करें"
+  },
+  "compress": {
+    "title": "संपीड़न स्तर",
+    "light": "हल्का",
+    "light_sub": "तेज़, 10-20% छोटा",
+    "medium": "मध्यम",
+    "medium_sub": "संतुलित, 20-40% छोटा",
+    "max": "अधिकतम",
+    "max_sub": "सबसे छोटा, अधिक समय"
   },
   "sign": {
     "title": "PDF पर हस्ताक्षर करें",

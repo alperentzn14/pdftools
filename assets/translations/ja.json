@@ -2,7 +2,7 @@
   "app_title": "PDFツール",
   "pick_file": "ファイルを選択",
   "pick_files": "ファイルを選択",
-  "pick_image": "画像を選択",
+  "pick_image": "画像を選択（複数可）",
   "convert": "変換",
   "share": "共有",
   "open": "開く",
@@ -23,7 +23,7 @@
   "est_time": "約{sec}秒",
   "ops": {
     "ocr_to_pdf": "OCRスキャナー",
-    "ocr_to_pdf_sub": "画像からテキストを抽出→PDF",
+    "ocr_to_pdf_sub": "画像(複数可)からテキストを抽出→PDF",
     "word_to_pdf": "Word→PDF",
     "word_to_pdf_sub": ".docxファイルをPDFに変換",
     "pdf_to_word": "PDF→Word",
@@ -47,7 +47,9 @@
     "share_file": "クイック共有",
     "share_file_sub": "WhatsApp/メールで共有",
     "batch_convert": "一括変換",
-    "batch_convert_sub": "{count}ファイルを変換"
+    "batch_convert_sub": "{count}ファイルを変換",
+    "compress_pdf": "PDFを圧縮",
+    "compress_pdf_sub": "ファイルサイズを縮小"
   },
   "errors": {
     "no_text_extracted": "このPDFからテキストを抽出できませんでした。\nスキャンされたPDFにはOCRスキャナーを使用してください。",
@@ -84,6 +86,15 @@
     "title": "PDF→画像結果",
     "pages_done": "{count}ページが変換されました",
     "share_all": "すべて共有"
+  },
+  "compress": {
+    "title": "圧縮レベル",
+    "light": "軽度",
+    "light_sub": "高速、10-20%縮小",
+    "medium": "中度",
+    "medium_sub": "バランス型、20-40%縮小",
+    "max": "最大",
+    "max_sub": "最小サイズ、時間がかかる"
   },
   "sign": {
     "title": "PDFに署名",
