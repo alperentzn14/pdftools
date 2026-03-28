@@ -1,4 +1,4 @@
-package com.example.pdfconverter
+package com.example.PDFly
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,4 +1,4 @@
-import 'package:pdfconverter/features/pdf/domain/repositories/pdfRepository.dart';
+import 'package:PDFly/features/pdf/domain/repositories/pdfRepository.dart';
 
 class ExtractTextUseCase {
   final PdfRepository repository;

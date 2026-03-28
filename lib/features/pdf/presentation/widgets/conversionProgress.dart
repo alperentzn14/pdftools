@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfState.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfState.dart';
 
 class ConversionProgress extends StatelessWidget {
   final PdfState state;
@@ -32,10 +32,12 @@ class ConversionProgress extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'batch_progress'.tr(namedArgs: {
-                  'completed': s.completed.toString(),
-                  'total': s.total.toString(),
-                }),
+                'batch_progress'.tr(
+                  namedArgs: {
+                    'completed': s.completed.toString(),
+                    'total': s.total.toString(),
+                  },
+                ),
                 style: const TextStyle(color: Colors.white70, fontSize: 14),
               ),
               if (s.currentFileName.isNotEmpty) ...[

@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:pdfconverter/features/pdf/domain/repositories/pdfRepository.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfEvent.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfState.dart';
+import 'package:PDFly/features/pdf/domain/repositories/pdfRepository.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfEvent.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfState.dart';
 
 class PdfBloc extends Bloc<PdfEvent, PdfState> {
   final PdfRepository repo;
@@ -215,11 +215,13 @@ class PdfBloc extends Bloc<PdfEvent, PdfState> {
       for (int i = 0; i < event.imagePaths.length; i++) {
         final imagePath = event.imagePaths[i];
         final fileName = imagePath.split('/').last.split('\\').last;
-        emit(PdfBatchProgress(
-          completed: i,
-          total: total,
-          currentFileName: fileName,
-        ));
+        emit(
+          PdfBatchProgress(
+            completed: i,
+            total: total,
+            currentFileName: fileName,
+          ),
+        );
         if (i > 0) buffer.writeln('\n');
         final text = await repo.extractTextFromImage(imagePath);
         buffer.writeln(text.trim());

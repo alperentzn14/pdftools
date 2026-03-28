@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfBloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfEvent.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfState.dart';
-import 'package:pdfconverter/features/pdf/presentation/screens/batchResultScreen.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfBloc.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfEvent.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfState.dart';
+import 'package:PDFly/features/pdf/presentation/screens/batchResultScreen.dart';
 
 class PdfEditScreen extends StatefulWidget {
   final int initialTab;
@@ -35,7 +35,11 @@ class _PdfEditScreenState extends State<PdfEditScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this, initialIndex: widget.initialTab);
+    _tabController = TabController(
+      length: 3,
+      vsync: this,
+      initialIndex: widget.initialTab,
+    );
     if (widget.pdfPath != null) {
       _splitPath = widget.pdfPath;
       _deletePath = widget.pdfPath;
@@ -58,7 +62,9 @@ class _PdfEditScreenState extends State<PdfEditScreen>
     );
     if (result != null) {
       setState(() {
-        _mergePaths.addAll(result.files.map((f) => f.path ?? '').where((p) => p.isNotEmpty));
+        _mergePaths.addAll(
+          result.files.map((f) => f.path ?? '').where((p) => p.isNotEmpty),
+        );
       });
     }
   }
@@ -90,8 +96,10 @@ class _PdfEditScreenState extends State<PdfEditScreen>
               duration: const Duration(seconds: 8),
               action: SnackBarAction(
                 label: 'open'.tr(),
-                onPressed: () =>
-                    context.read<PdfBloc>().add(OpenFileEvent(state.filePath)),
+                onPressed:
+                    () => context.read<PdfBloc>().add(
+                      OpenFileEvent(state.filePath),
+                    ),
               ),
             ),
           );
@@ -99,10 +107,11 @@ class _PdfEditScreenState extends State<PdfEditScreen>
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => BlocProvider.value(
-                value: context.read<PdfBloc>(),
-                child: BatchResultScreen(filePaths: state.filePaths),
-              ),
+              builder:
+                  (_) => BlocProvider.value(
+                    value: context.read<PdfBloc>(),
+                    child: BatchResultScreen(filePaths: state.filePaths),
+                  ),
             ),
           );
         } else if (state is PdfError) {
@@ -144,31 +153,55 @@ class _PdfEditScreenState extends State<PdfEditScreen>
             _SplitTab(
               pdfPath: _splitPath,
               controller: _splitController,
-              onPickPdf: () => _pickPdfSingle((p) => setState(() => _splitPath = p)),
+              onPickPdf:
+                  () => _pickPdfSingle((p) => setState(() => _splitPath = p)),
               onSplit: () {
-                if (_splitPath == null) { _showError('edit.pick_pdf_first'.tr()); return; }
-                final pages = _splitController.text.trim().split(',')
-                    .map((s) => int.tryParse(s.trim()))
-                    .whereType<int>()
-                    .toList();
-                if (pages.isEmpty) { _showError('edit.split_hint_error'.tr()); return; }
+                if (_splitPath == null) {
+                  _showError('edit.pick_pdf_first'.tr());
+                  return;
+                }
+                final pages =
+                    _splitController.text
+                        .trim()
+                        .split(',')
+                        .map((s) => int.tryParse(s.trim()))
+                        .whereType<int>()
+                        .toList();
+                if (pages.isEmpty) {
+                  _showError('edit.split_hint_error'.tr());
+                  return;
+                }
                 context.read<PdfBloc>().add(SplitPdfEvent(_splitPath!, pages));
               },
             ),
             _DeleteTab(
               pdfPath: _deletePath,
               controller: _deleteController,
-              onPickPdf: () => _pickPdfSingle((p) => setState(() => _deletePath = p)),
+              onPickPdf:
+                  () => _pickPdfSingle((p) => setState(() => _deletePath = p)),
               onDelete: () {
-                if (_deletePath == null) { _showError('edit.pick_pdf_first'.tr()); return; }
-                final pages = _deleteController.text.trim().split(',')
-                    .map((s) => int.tryParse(s.trim()))
-                    .whereType<int>()
-                    .where((p) => p >= 1)
-                    .map((p) => p - 1) // convert 1-based user input → 0-based index
-                    .toList();
-                if (pages.isEmpty) { _showError('edit.delete_hint_error'.tr()); return; }
-                context.read<PdfBloc>().add(DeletePagesEvent(_deletePath!, pages));
+                if (_deletePath == null) {
+                  _showError('edit.pick_pdf_first'.tr());
+                  return;
+                }
+                final pages =
+                    _deleteController.text
+                        .trim()
+                        .split(',')
+                        .map((s) => int.tryParse(s.trim()))
+                        .whereType<int>()
+                        .where((p) => p >= 1)
+                        .map(
+                          (p) => p - 1,
+                        ) // convert 1-based user input → 0-based index
+                        .toList();
+                if (pages.isEmpty) {
+                  _showError('edit.delete_hint_error'.tr());
+                  return;
+                }
+                context.read<PdfBloc>().add(
+                  DeletePagesEvent(_deletePath!, pages),
+                );
               },
             ),
           ],
@@ -184,7 +217,12 @@ class _MergeTab extends StatelessWidget {
   final void Function(int) onRemove;
   final VoidCallback onMerge;
 
-  const _MergeTab({required this.paths, required this.onAdd, required this.onRemove, required this.onMerge});
+  const _MergeTab({
+    required this.paths,
+    required this.onAdd,
+    required this.onRemove,
+    required this.onMerge,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -193,20 +231,33 @@ class _MergeTab extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: paths.isEmpty
-                ? Center(child: Text('edit.merge_empty'.tr(), style: const TextStyle(color: Colors.grey)))
-                : ListView.separated(
-                    itemCount: paths.length,
-                    separatorBuilder: (_, __) => const Divider(),
-                    itemBuilder: (_, i) => ListTile(
-                      leading: const Icon(Icons.picture_as_pdf, color: Color(0xFF1E3A8A)),
-                      title: Text(paths[i].split('/').last.split('\\').last, overflow: TextOverflow.ellipsis),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => onRemove(i),
+            child:
+                paths.isEmpty
+                    ? Center(
+                      child: Text(
+                        'edit.merge_empty'.tr(),
+                        style: const TextStyle(color: Colors.grey),
                       ),
+                    )
+                    : ListView.separated(
+                      itemCount: paths.length,
+                      separatorBuilder: (_, __) => const Divider(),
+                      itemBuilder:
+                          (_, i) => ListTile(
+                            leading: const Icon(
+                              Icons.picture_as_pdf,
+                              color: Color(0xFF1E3A8A),
+                            ),
+                            title: Text(
+                              paths[i].split('/').last.split('\\').last,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () => onRemove(i),
+                            ),
+                          ),
                     ),
-                  ),
           ),
           const SizedBox(height: 12),
           Row(
@@ -244,7 +295,12 @@ class _SplitTab extends StatelessWidget {
   final VoidCallback onPickPdf;
   final VoidCallback onSplit;
 
-  const _SplitTab({required this.pdfPath, required this.controller, required this.onPickPdf, required this.onSplit});
+  const _SplitTab({
+    required this.pdfPath,
+    required this.controller,
+    required this.onPickPdf,
+    required this.onSplit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +311,10 @@ class _SplitTab extends StatelessWidget {
         children: [
           _PdfPickRow(pdfPath: pdfPath, onPick: onPickPdf),
           const SizedBox(height: 16),
-          Text('edit.split_after_pages'.tr(), style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            'edit.split_after_pages'.tr(),
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 8),
           TextField(
             controller: controller,
@@ -291,7 +350,12 @@ class _DeleteTab extends StatelessWidget {
   final VoidCallback onPickPdf;
   final VoidCallback onDelete;
 
-  const _DeleteTab({required this.pdfPath, required this.controller, required this.onPickPdf, required this.onDelete});
+  const _DeleteTab({
+    required this.pdfPath,
+    required this.controller,
+    required this.onPickPdf,
+    required this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +366,10 @@ class _DeleteTab extends StatelessWidget {
         children: [
           _PdfPickRow(pdfPath: pdfPath, onPick: onPickPdf),
           const SizedBox(height: 16),
-          Text('edit.pages_to_delete'.tr(), style: const TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            'edit.pages_to_delete'.tr(),
+            style: const TextStyle(fontWeight: FontWeight.w600),
+          ),
           const SizedBox(height: 8),
           TextField(
             controller: controller,
@@ -340,9 +407,10 @@ class _PdfPickRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final name = pdfPath != null
-        ? pdfPath!.split('/').last.split('\\').last
-        : 'edit.no_pdf'.tr();
+    final name =
+        pdfPath != null
+            ? pdfPath!.split('/').last.split('\\').last
+            : 'edit.no_pdf'.tr();
     return InkWell(
       onTap: onPick,
       child: Container(

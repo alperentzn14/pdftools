@@ -1,18 +1,18 @@
 import 'dart:typed_data';
-import 'package:pdfconverter/features/pdf/data/repositories/advancedExcelService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfCompressService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/excelPdfService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/excelService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/imagePdfService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/ocrService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfEditService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfImageService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfReaderService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfSignatureService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/wordReaderService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/wordService.dart';
-import 'package:pdfconverter/features/pdf/domain/repositories/pdfRepository.dart';
+import 'package:PDFly/features/pdf/data/repositories/advancedExcelService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfCompressService.dart';
+import 'package:PDFly/features/pdf/data/repositories/excelPdfService.dart';
+import 'package:PDFly/features/pdf/data/repositories/excelService.dart';
+import 'package:PDFly/features/pdf/data/repositories/imagePdfService.dart';
+import 'package:PDFly/features/pdf/data/repositories/ocrService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfEditService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfImageService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfReaderService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfSignatureService.dart';
+import 'package:PDFly/features/pdf/data/repositories/wordReaderService.dart';
+import 'package:PDFly/features/pdf/data/repositories/wordService.dart';
+import 'package:PDFly/features/pdf/domain/repositories/pdfRepository.dart';
 import 'package:share_plus/share_plus.dart';
 
 class PdfRepositoryImpl implements PdfRepository {

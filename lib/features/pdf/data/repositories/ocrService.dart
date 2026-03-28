@@ -1,5 +1,5 @@
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:pdfconverter/core/utils/image_preprocess.dart';
+import 'package:PDFly/core/utils/image_preprocess.dart';
 
 class OcrService {
   final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);

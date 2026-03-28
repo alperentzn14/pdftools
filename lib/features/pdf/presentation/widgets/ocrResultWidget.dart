@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfBloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfState.dart';
-import 'package:pdfconverter/features/pdf/presentation/gradient/appCard.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfBloc.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfState.dart';
+import 'package:PDFly/features/pdf/presentation/gradient/appCard.dart';
 
 class OCRResultWidget extends StatelessWidget {
   @override

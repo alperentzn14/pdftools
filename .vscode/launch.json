@@ -6,18 +6,18 @@
     "configurations": [
     
         {
-            "name": "pdfconverter",
+            "name": "PDFly",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "pdfconverter (profile mode)",
+            "name": "PDFly (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "pdfconverter (release mode)",
+            "name": "PDFly (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

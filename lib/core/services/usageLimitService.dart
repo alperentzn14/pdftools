@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pdfconverter/core/config/apiConfig.dart';
+import 'package:PDFly/core/config/apiConfig.dart';
 
 enum AiFeature { summary, quiz }
 
@@ -11,9 +11,10 @@ class UsageLimitService {
   String _featureKey(AiFeature f) =>
       f == AiFeature.summary ? _summaryKey : _quizKey;
 
-  int _dailyLimit(AiFeature f) => f == AiFeature.summary
-      ? ApiConfig.dailySummaryLimit
-      : ApiConfig.dailyQuizLimit;
+  int _dailyLimit(AiFeature f) =>
+      f == AiFeature.summary
+          ? ApiConfig.dailySummaryLimit
+          : ApiConfig.dailyQuizLimit;
 
   /// Gün değişmişse sayaçları sıfırlar
   Future<void> _resetIfNewDay(SharedPreferences prefs) async {

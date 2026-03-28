@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pdfconverter/features/pdf/presentation/gradient/appCard.dart';
-import 'package:pdfconverter/features/pdf/presentation/gradient/gradientScaffold.dart';
-import 'package:pdfconverter/features/pdf/presentation/gradient/primaryButton.dart';
-import 'package:pdfconverter/features/pdf/presentation/widgets/filePickerWidget.dart';
+import 'package:PDFly/features/pdf/presentation/gradient/appCard.dart';
+import 'package:PDFly/features/pdf/presentation/gradient/gradientScaffold.dart';
+import 'package:PDFly/features/pdf/presentation/gradient/primaryButton.dart';
+import 'package:PDFly/features/pdf/presentation/widgets/filePickerWidget.dart';
 
 class ConvertScreen extends StatelessWidget {
   @override

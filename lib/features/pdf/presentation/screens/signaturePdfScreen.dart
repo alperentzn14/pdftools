@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfSignatureService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfSignatureService.dart';
 import 'package:signature/signature.dart';
 
 class SignaturePdfScreen extends StatefulWidget {
@@ -47,15 +47,15 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
 
   Future<void> _saveSignedPdf() async {
     if (_pdfPath == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('sign.pick_pdf_first'.tr())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('sign.pick_pdf_first'.tr())));
       return;
     }
     if (_controller.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('sign.draw_first'.tr())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('sign.draw_first'.tr())));
       return;
     }
 
@@ -70,14 +70,18 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
       );
 
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('sign.saved'.tr())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('sign.saved'.tr())));
       await OpenFilex.open(outPath);
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${'errors.file_open_failed'.tr(namedArgs: {'path': ''})} $e')),
+        SnackBar(
+          content: Text(
+            '${'errors.file_open_failed'.tr(namedArgs: {'path': ''})} $e',
+          ),
+        ),
       );
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -86,9 +90,10 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final fileName = _pdfPath != null
-        ? _pdfPath!.split('/').last.split('\\').last
-        : 'sign.no_pdf'.tr();
+    final fileName =
+        _pdfPath != null
+            ? _pdfPath!.split('/').last.split('\\').last
+            : 'sign.no_pdf'.tr();
 
     return Scaffold(
       appBar: AppBar(
@@ -139,7 +144,10 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'sign.draw_label'.tr(),
-                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
@@ -191,16 +199,17 @@ class _SignaturePdfScreenState extends State<SignaturePdfScreen> {
                       backgroundColor: const Color(0xFF1E3A8A),
                       foregroundColor: Colors.white,
                     ),
-                    child: _isSaving
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : Text('sign.add_btn'.tr()),
+                    child:
+                        _isSaving
+                            ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                            : Text('sign.add_btn'.tr()),
                   ),
                 ),
               ],

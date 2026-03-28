@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.pdfconverter"
+    namespace = "com.example.PDFly"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973" // <-- NDK 27 belirtiyoruz
 
@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.pdfconverter"
+        applicationId = "com.example.PDFly"
         minSdk = 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

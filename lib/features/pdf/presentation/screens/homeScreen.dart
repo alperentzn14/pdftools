@@ -3,17 +3,17 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfBloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfEvent.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfState.dart';
-import 'package:pdfconverter/features/pdf/presentation/gradient/gradientAdBanner.dart';
-import 'package:pdfconverter/features/pdf/presentation/screens/batchResultScreen.dart';
-import 'package:pdfconverter/features/pdf/presentation/screens/imageResultScreen.dart';
-import 'package:pdfconverter/features/pdf/presentation/screens/pdfEditScreen.dart';
-import 'package:pdfconverter/features/pdf/presentation/screens/signaturePdfScreen.dart';
-import 'package:pdfconverter/features/pdf/presentation/widgets/conversionProgress.dart';
-import 'package:pdfconverter/features/pdf/presentation/widgets/filePickerZone.dart';
-import 'package:pdfconverter/features/pdf/presentation/widgets/operationList.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfBloc.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfEvent.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfState.dart';
+import 'package:PDFly/features/pdf/presentation/gradient/gradientAdBanner.dart';
+import 'package:PDFly/features/pdf/presentation/screens/batchResultScreen.dart';
+import 'package:PDFly/features/pdf/presentation/screens/imageResultScreen.dart';
+import 'package:PDFly/features/pdf/presentation/screens/pdfEditScreen.dart';
+import 'package:PDFly/features/pdf/presentation/screens/signaturePdfScreen.dart';
+import 'package:PDFly/features/pdf/presentation/widgets/conversionProgress.dart';
+import 'package:PDFly/features/pdf/presentation/widgets/filePickerZone.dart';
+import 'package:PDFly/features/pdf/presentation/widgets/operationList.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -61,16 +61,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   static const _languages = [
-    {'code': 'tr', 'name': 'Türkçe',    'flag': '🇹🇷'},
-    {'code': 'en', 'name': 'English',   'flag': '🇬🇧'},
-    {'code': 'de', 'name': 'Deutsch',   'flag': '🇩🇪'},
-    {'code': 'zh', 'name': '中文',       'flag': '🇨🇳'},
-    {'code': 'es', 'name': 'Español',   'flag': '🇪🇸'},
-    {'code': 'fr', 'name': 'Français',  'flag': '🇫🇷'},
-    {'code': 'ru', 'name': 'Русский',   'flag': '🇷🇺'},
+    {'code': 'tr', 'name': 'Türkçe', 'flag': '🇹🇷'},
+    {'code': 'en', 'name': 'English', 'flag': '🇬🇧'},
+    {'code': 'de', 'name': 'Deutsch', 'flag': '🇩🇪'},
+    {'code': 'zh', 'name': '中文', 'flag': '🇨🇳'},
+    {'code': 'es', 'name': 'Español', 'flag': '🇪🇸'},
+    {'code': 'fr', 'name': 'Français', 'flag': '🇫🇷'},
+    {'code': 'ru', 'name': 'Русский', 'flag': '🇷🇺'},
     {'code': 'pt', 'name': 'Português', 'flag': '🇧🇷'},
-    {'code': 'ja', 'name': '日本語',     'flag': '🇯🇵'},
-    {'code': 'hi', 'name': 'हिन्दी',    'flag': '🇮🇳'},
+    {'code': 'ja', 'name': '日本語', 'flag': '🇯🇵'},
+    {'code': 'hi', 'name': 'हिन्दी', 'flag': '🇮🇳'},
   ];
 
   void _showLanguagePicker(BuildContext context) {
@@ -107,17 +107,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     final lang = _languages[i];
                     final isSelected = lang['code'] == current;
                     return ListTile(
-                      leading: Text(lang['flag']!, style: const TextStyle(fontSize: 24)),
+                      leading: Text(
+                        lang['flag']!,
+                        style: const TextStyle(fontSize: 24),
+                      ),
                       title: Text(
                         lang['name']!,
                         style: TextStyle(
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                          fontWeight:
+                              isSelected ? FontWeight.bold : FontWeight.normal,
                           color: isSelected ? const Color(0xFF1E3A8A) : null,
                         ),
                       ),
-                      trailing: isSelected
-                          ? const Icon(Icons.check, color: Color(0xFF1E3A8A))
-                          : null,
+                      trailing:
+                          isSelected
+                              ? const Icon(
+                                Icons.check,
+                                color: Color(0xFF1E3A8A),
+                              )
+                              : null,
                       onTap: () {
                         context.setLocale(Locale(lang['code']!));
                         Navigator.pop(ctx);
@@ -156,30 +164,33 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: bloc,
-            child: const PdfEditScreen(initialTab: 0),
-          ),
+          builder:
+              (_) => BlocProvider.value(
+                value: bloc,
+                child: const PdfEditScreen(initialTab: 0),
+              ),
         ),
       );
     } else if (request is OpOpenSplitScreenRequest) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: bloc,
-            child: PdfEditScreen(initialTab: 1, pdfPath: request.path),
-          ),
+          builder:
+              (_) => BlocProvider.value(
+                value: bloc,
+                child: PdfEditScreen(initialTab: 1, pdfPath: request.path),
+              ),
         ),
       );
     } else if (request is OpOpenDeletePagesRequest) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: bloc,
-            child: PdfEditScreen(initialTab: 2, pdfPath: request.path),
-          ),
+          builder:
+              (_) => BlocProvider.value(
+                value: bloc,
+                child: PdfEditScreen(initialTab: 2, pdfPath: request.path),
+              ),
         ),
       );
     } else if (request is OpSignPdfRequest) {
@@ -215,38 +226,81 @@ class _HomeScreenState extends State<HomeScreen> {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
-      builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 12),
-            Container(
-              width: 40, height: 4,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(2),
-              ),
+      builder:
+          (ctx) => SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 12),
+                Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade300,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: Text(
+                    'compress.title'.tr(),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                _compressionTile(
+                  ctx,
+                  bloc,
+                  pdfPath,
+                  0,
+                  'compress.light'.tr(),
+                  'compress.light_sub'.tr(),
+                  Icons.compress,
+                  Colors.green,
+                ),
+                _compressionTile(
+                  ctx,
+                  bloc,
+                  pdfPath,
+                  1,
+                  'compress.medium'.tr(),
+                  'compress.medium_sub'.tr(),
+                  Icons.compress,
+                  Colors.orange,
+                ),
+                _compressionTile(
+                  ctx,
+                  bloc,
+                  pdfPath,
+                  2,
+                  'compress.max'.tr(),
+                  'compress.max_sub'.tr(),
+                  Icons.compress,
+                  Colors.red,
+                ),
+                const SizedBox(height: 8),
+              ],
             ),
-            const SizedBox(height: 8),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Text(
-                'compress.title'.tr(),
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-            _compressionTile(ctx, bloc, pdfPath, 0, 'compress.light'.tr(), 'compress.light_sub'.tr(), Icons.compress, Colors.green),
-            _compressionTile(ctx, bloc, pdfPath, 1, 'compress.medium'.tr(), 'compress.medium_sub'.tr(), Icons.compress, Colors.orange),
-            _compressionTile(ctx, bloc, pdfPath, 2, 'compress.max'.tr(), 'compress.max_sub'.tr(), Icons.compress, Colors.red),
-            const SizedBox(height: 8),
-          ],
-        ),
-      ),
+          ),
     );
   }
 
-  Widget _compressionTile(BuildContext ctx, PdfBloc bloc, String path,
-      int level, String title, String subtitle, IconData icon, Color color) {
+  Widget _compressionTile(
+    BuildContext ctx,
+    PdfBloc bloc,
+    String path,
+    int level,
+    String title,
+    String subtitle,
+    IconData icon,
+    Color color,
+  ) {
     return ListTile(
       leading: Icon(icon, color: color),
       title: Text(title),
@@ -346,7 +400,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.language, color: Colors.white70),
+                          icon: const Icon(
+                            Icons.language,
+                            color: Colors.white70,
+                          ),
                           tooltip: 'change_language'.tr(),
                           onPressed: () => _showLanguagePicker(context),
                         ),
@@ -431,7 +488,11 @@ class _FileChipsRow extends StatelessWidget {
           // Görüntü seçiliyse "+" butonu — mevcut seçime resim ekler
           if (isImages)
             IconButton(
-              icon: const Icon(Icons.add_photo_alternate, color: Colors.white70, size: 20),
+              icon: const Icon(
+                Icons.add_photo_alternate,
+                color: Colors.white70,
+                size: 20,
+              ),
               onPressed: onAddMore,
               tooltip: 'pick_image'.tr(),
               padding: EdgeInsets.zero,

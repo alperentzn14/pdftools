@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 import 'package:equatable/equatable.dart';
-import 'package:pdfconverter/features/pdf/domain/repositories/pdfRepository.dart';
+import 'package:PDFly/features/pdf/domain/repositories/pdfRepository.dart';
 
-export 'package:pdfconverter/features/pdf/domain/repositories/pdfRepository.dart'
+export 'package:PDFly/features/pdf/domain/repositories/pdfRepository.dart'
     show ConversionType;
 
 abstract class PdfEvent extends Equatable {

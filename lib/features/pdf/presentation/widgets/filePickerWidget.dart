@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:pdfconverter/features/pdf/presentation/gradient/appCard.dart';
+import 'package:PDFly/features/pdf/presentation/gradient/appCard.dart';
 
 class FilePickerWidget extends StatelessWidget {
   final Function(String path) onPicked;

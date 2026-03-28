@@ -1,9 +1,9 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfBloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfEvent.dart';
-import 'package:pdfconverter/features/pdf/presentation/gradient/appCard.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfBloc.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfEvent.dart';
+import 'package:PDFly/features/pdf/presentation/gradient/appCard.dart';
 
 class StudentTab extends StatelessWidget {
   const StudentTab({super.key});
@@ -25,9 +25,9 @@ class StudentTab extends StatelessWidget {
               );
               if (result != null && result.files.single.path != null) {
                 if (!context.mounted) return;
-                context
-                    .read<PdfBloc>()
-                    .add(PdfToWordEvent(result.files.single.path!));
+                context.read<PdfBloc>().add(
+                  PdfToWordEvent(result.files.single.path!),
+                );
               }
             },
             child: _buildItem(Icons.description, 'PDF → Word'),

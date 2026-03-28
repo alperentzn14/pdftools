@@ -2,22 +2,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/advancedExcelService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfCompressService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/excelPdfService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/excelService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/imagePdfService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/ocrService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfEditService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfImageService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfReaderService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/pdfSignatureService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/wordReaderService.dart';
-import 'package:pdfconverter/features/pdf/data/repositories/wordService.dart';
-import 'package:pdfconverter/features/pdf/domain/repositories/pdfRepositoryImpl.dart';
-import 'package:pdfconverter/features/pdf/presentation/bloc/pdfBloc.dart';
-import 'package:pdfconverter/features/pdf/presentation/screens/homeScreen.dart';
+import 'package:PDFly/features/pdf/data/repositories/advancedExcelService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfCompressService.dart';
+import 'package:PDFly/features/pdf/data/repositories/excelPdfService.dart';
+import 'package:PDFly/features/pdf/data/repositories/excelService.dart';
+import 'package:PDFly/features/pdf/data/repositories/imagePdfService.dart';
+import 'package:PDFly/features/pdf/data/repositories/ocrService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfEditService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfImageService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfReaderService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfService.dart';
+import 'package:PDFly/features/pdf/data/repositories/pdfSignatureService.dart';
+import 'package:PDFly/features/pdf/data/repositories/wordReaderService.dart';
+import 'package:PDFly/features/pdf/data/repositories/wordService.dart';
+import 'package:PDFly/features/pdf/domain/repositories/pdfRepositoryImpl.dart';
+import 'package:PDFly/features/pdf/presentation/bloc/pdfBloc.dart';
+import 'package:PDFly/features/pdf/presentation/screens/homeScreen.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
@@ -65,23 +65,24 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       home: BlocProvider(
-        create: (_) => PdfBloc(
-          PdfRepositoryImpl(
-            OcrService(),
-            PdfService(),
-            WordService(),
-            PdfReaderService(),
-            WordReaderService(),
-            ExcelService(),
-            ImagePdfService(),
-            PdfImageService(),
-            ExcelPdfService(),
-            PdfEditService(),
-            AdvancedExcelService(),
-            PdfSignatureService(),
-            PdfCompressService(),
-          ),
-        ),
+        create:
+            (_) => PdfBloc(
+              PdfRepositoryImpl(
+                OcrService(),
+                PdfService(),
+                WordService(),
+                PdfReaderService(),
+                WordReaderService(),
+                ExcelService(),
+                ImagePdfService(),
+                PdfImageService(),
+                ExcelPdfService(),
+                PdfEditService(),
+                AdvancedExcelService(),
+                PdfSignatureService(),
+                PdfCompressService(),
+              ),
+            ),
         child: const HomeScreen(),
       ),
     );
@@ -205,9 +206,7 @@ class AdManager {
           loadRewardedAd();
         },
       );
-      _rewardedAd!.show(
-        onUserEarnedReward: (ad, reward) => onRewarded(),
-      );
+      _rewardedAd!.show(onUserEarnedReward: (ad, reward) => onRewarded());
       _isRewardedLoaded = false;
     }
   }
