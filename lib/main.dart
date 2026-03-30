@@ -65,24 +65,27 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       home: BlocProvider(
-        create:
-            (_) => PdfBloc(
-              PdfRepositoryImpl(
-                OcrService(),
-                PdfService(),
-                WordService(),
-                PdfReaderService(),
-                WordReaderService(),
-                ExcelService(),
-                ImagePdfService(),
-                PdfImageService(),
-                ExcelPdfService(),
-                PdfEditService(),
-                AdvancedExcelService(),
-                PdfSignatureService(),
-                PdfCompressService(),
-              ),
+        create: (_) {
+          final ocrService = OcrService();
+          ocrService.warmUp();
+          return PdfBloc(
+            PdfRepositoryImpl(
+              ocrService,
+              PdfService(),
+              WordService(),
+              PdfReaderService(),
+              WordReaderService(),
+              ExcelService(),
+              ImagePdfService(),
+              PdfImageService(),
+              ExcelPdfService(),
+              PdfEditService(),
+              AdvancedExcelService(),
+              PdfSignatureService(),
+              PdfCompressService(),
             ),
+          );
+        },
         child: const HomeScreen(),
       ),
     );

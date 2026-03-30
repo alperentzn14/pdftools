@@ -1,54 +1,54 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
 class ImagePreprocess {
   /// OCR öncesi görüntüyü hazırlar.
   ///
-  /// Tesseract için hedef çözünürlük 2000px — LSTM motoru bu boyutta
-  /// hem hızlı hem doğru çalışır. 4000px+ mobilde dakikalarca sürebilir.
+  /// ML Kit 4000px altı görüntüleri kendi içinde iyi işler.
+  /// Sadece çok büyük görüntülerde (>4000px) küçültme yapar.
+  /// Küçük/orta görüntüleri olduğu gibi bırakarak gereksiz
+  /// decode/encode süresinden kaçınır.
   static Future<File> process(String path) async {
-    final bytes = await File(path).readAsBytes();
-    img.Image? image = img.decodeImage(bytes);
+    final file = File(path);
+    final bytes = await file.readAsBytes();
 
-    if (image == null) return File(path);
+    // Boyutu hızlıca kontrol et (tam decode etmeden)
+    final info = img.findDecoderForData(bytes);
+    if (info == null) return file;
 
-    // 1. Büyütme — hedef: 2000px genişlik (Tesseract için optimal)
-    if (image.width < 2000) {
-      final scale = 2000.0 / image.width;
-      image = img.copyResize(
-        image,
-        width: (image.width * scale).round(),
-        height: (image.height * scale).round(),
-        interpolation: img.Interpolation.cubic,
-      );
-    } else if (image.width > 2500) {
-      // Çok büyük görüntüleri küçült — Tesseract LSTM'i yavaşlatır
-      final scale = 2000.0 / image.width;
-      image = img.copyResize(
-        image,
-        width: 2000,
-        height: (image.height * scale).round(),
-        interpolation: img.Interpolation.average,
-      );
-    }
+    // Sadece dosya 3MB+ ise ön işleme yap (büyük kamera fotoğrafları)
+    // Küçük dosyalarda decode/encode süresi kazançtan fazla olur
+    if (bytes.length < 3 * 1024 * 1024) return file;
 
-    // 2. Gri tonlama
-    image = img.grayscale(image);
-
-    // 3. Kontrast artırma
-    image = img.adjustColor(image, contrast: 1.8);
-
-    // 4. Keskinleştirme (büyütme sonrası)
-    image = img.convolution(image, filter: [0, -1, 0, -1, 5, -1, 0, -1, 0]);
+    final processedBytes = await compute(_processImage, bytes);
+    if (processedBytes == null) return file;
 
     final tempDir = await getTemporaryDirectory();
     final newPath =
-        '${tempDir.path}/proc_${DateTime.now().millisecondsSinceEpoch}.png';
-
+        '${tempDir.path}/proc_${DateTime.now().millisecondsSinceEpoch}.jpg';
     final processedFile = File(newPath);
-    await processedFile.writeAsBytes(img.encodePng(image));
-
+    await processedFile.writeAsBytes(processedBytes);
     return processedFile;
+  }
+
+  static Uint8List? _processImage(Uint8List bytes) {
+    img.Image? image = img.decodeImage(bytes);
+    if (image == null) return null;
+
+    // Sadece çok büyük görüntüleri küçült
+    const maxWidth = 2400;
+    if (image.width <= maxWidth && image.height <= maxWidth) return null;
+
+    final scale = maxWidth / (image.width > image.height ? image.width : image.height);
+    image = img.copyResize(
+      image,
+      width: (image.width * scale).round(),
+      height: (image.height * scale).round(),
+      interpolation: img.Interpolation.average,
+    );
+
+    return Uint8List.fromList(img.encodeJpg(image, quality: 85));
   }
 }

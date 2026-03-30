@@ -84,16 +84,14 @@ class PdfBloc extends Bloc<PdfEvent, PdfState> {
   }
 
   Future<void> _open(OpenFileEvent event, Emitter emit) async {
-    final result = await OpenFilex.open(event.path);
-    if (result.type != ResultType.done) {
-      emit(
-        PdfError(
-          'Dosya oluşturuldu fakat açılamadı.\n'
-          'Uyumlu bir uygulama yüklü olmayabilir.\n'
-          'Paylaşım ile başka uygulamada açabilirsiniz.\n'
-          'Konum: ${event.path}',
-        ),
-      );
+    try {
+      final result = await OpenFilex.open(event.path);
+      if (result.type != ResultType.done) {
+        // Dosya paylaşım ile açılmayı dene
+        await repo.shareFile(event.path);
+      }
+    } catch (_) {
+      await repo.shareFile(event.path);
     }
   }
 

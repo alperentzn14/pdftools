@@ -312,20 +312,47 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _showSuccessDialog(BuildContext context, String filePath) {
+    final fileName = filePath.split('/').last.split('\\').last;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        icon: const Icon(Icons.check_circle, color: Color(0xFF2E7D32), size: 48),
+        title: Text('done'.tr()),
+        content: Text(
+          fileName,
+          style: const TextStyle(fontSize: 13, color: Colors.grey),
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+        ),
+        actionsAlignment: MainAxisAlignment.spaceEvenly,
+        actions: [
+          TextButton.icon(
+            onPressed: () {
+              Navigator.pop(ctx);
+              context.read<PdfBloc>().add(OpenFileEvent(filePath));
+            },
+            icon: const Icon(Icons.open_in_new, size: 18),
+            label: Text('open'.tr()),
+          ),
+          TextButton.icon(
+            onPressed: () {
+              Navigator.pop(ctx);
+              Share.shareXFiles([XFile(filePath)]);
+            },
+            icon: const Icon(Icons.share, size: 18),
+            label: Text('share'.tr()),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _handleState(BuildContext context, PdfState state) {
     if (state is PdfSuccess) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('done'.tr()),
-          action: SnackBarAction(
-            label: 'open'.tr(),
-            onPressed:
-                () =>
-                    context.read<PdfBloc>().add(OpenFileEvent(state.filePath)),
-          ),
-          duration: const Duration(seconds: 8),
-        ),
-      );
+      _showSuccessDialog(context, state.filePath);
     } else if (state is PdfError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -463,50 +490,134 @@ class _FileChipsRow extends StatelessWidget {
     required this.onAddMore,
   });
 
+  IconData _fileIcon(String name) {
+    final ext = name.split('.').last.toLowerCase();
+    switch (ext) {
+      case 'pdf':
+        return Icons.picture_as_pdf;
+      case 'doc':
+      case 'docx':
+        return Icons.description;
+      case 'xls':
+      case 'xlsx':
+        return Icons.table_chart;
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'webp':
+      case 'heic':
+        return Icons.image;
+      default:
+        return Icons.insert_drive_file;
+    }
+  }
+
+  Color _fileColor(String name) {
+    final ext = name.split('.').last.toLowerCase();
+    switch (ext) {
+      case 'pdf':
+        return const Color(0xFFD32F2F);
+      case 'doc':
+      case 'docx':
+        return const Color(0xFF1565C0);
+      case 'xls':
+      case 'xlsx':
+        return const Color(0xFF2E7D32);
+      default:
+        return const Color(0xFFE65100);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final count = files.length;
     final label =
-        files.length == 1
+        count == 1
             ? 'file_selected'.tr()
             : 'files_selected'.tr(
-              namedArgs: {'count': files.length.toString()},
+              namedArgs: {'count': count.toString()},
             );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white.withAlpha(20),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: Colors.white.withAlpha(40)),
+      ),
       child: Row(
         children: [
-          const Icon(Icons.attach_file, color: Colors.white70, size: 16),
-          const SizedBox(width: 6),
-          Expanded(
-            child: Text(
-              '${files.first.name}${files.length > 1 ? " +${files.length - 1}" : ""}  •  $label',
-              style: const TextStyle(color: Colors.white70, fontSize: 13),
-              overflow: TextOverflow.ellipsis,
+          // Dosya tipi ikonu
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: _fileColor(files.first.name).withAlpha(50),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              _fileIcon(files.first.name),
+              color: Colors.white,
+              size: 22,
             ),
           ),
-          // Görüntü seçiliyse "+" butonu — mevcut seçime resim ekler
+          const SizedBox(width: 12),
+          // Dosya bilgileri
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  files.first.name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  count > 1 ? '$label  (+${count - 1})' : label,
+                  style: const TextStyle(color: Colors.white54, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+          // Görüntü seçiliyse "+" butonu
           if (isImages)
-            IconButton(
-              icon: const Icon(
-                Icons.add_photo_alternate,
-                color: Colors.white70,
-                size: 20,
-              ),
+            _actionButton(
+              icon: Icons.add_photo_alternate,
               onPressed: onAddMore,
               tooltip: 'pick_image'.tr(),
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(),
             ),
           const SizedBox(width: 4),
-          IconButton(
-            icon: const Icon(Icons.close, color: Colors.white54, size: 18),
+          _actionButton(
+            icon: Icons.close,
             onPressed: onClear,
             tooltip: 'clear'.tr(),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _actionButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+    required String tooltip,
+  }) {
+    return Material(
+      color: Colors.white.withAlpha(20),
+      borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: const EdgeInsets.all(6),
+          child: Icon(icon, color: Colors.white70, size: 18),
+        ),
       ),
     );
   }

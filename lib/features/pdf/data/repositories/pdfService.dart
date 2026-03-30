@@ -1,46 +1,38 @@
 import 'dart:io';
-import 'package:pdf/widgets.dart' as pw;
+import 'dart:ui';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart';
 
 class PdfService {
+  Uint8List? _fontBytes;
+
+  Future<void> _ensureFont() async {
+    if (_fontBytes != null) return;
+    final fontData = await rootBundle.load("assets/fonts/NotoSans-Regular.ttf");
+    _fontBytes = fontData.buffer.asUint8List();
+  }
+
   Future<String> createPdf(String text) async {
-    final pdf = pw.Document();
+    await _ensureFont();
 
-    // ✅ Fontları yükle
-    final robotoData = await rootBundle.load("assets/fonts/Roboto-Regular.ttf");
-    final notoData = await rootBundle.load("assets/fonts/NotoSans-Regular.ttf");
+    final font = PdfTrueTypeFont(_fontBytes!, 14);
+    final doc = PdfDocument();
+    final page = doc.pages.add();
+    final size = page.getClientSize();
+    final bounds = Rect.fromLTWH(40, 40, size.width - 80, size.height - 80);
 
-    final robotoFont = pw.Font.ttf(robotoData);
-    final notoFont = pw.Font.ttf(notoData);
+    // PdfLayoutFormat.paginate otomatik sayfa taşması yönetir
+    final format = PdfLayoutFormat(layoutType: PdfLayoutType.paginate);
+    final element = PdfTextElement(text: text, font: font);
+    element.draw(page: page, bounds: bounds, format: format);
 
-    // ✅ PDF sayfası
-    final style = pw.TextStyle(
-      font: notoFont,
-      fontSize: 14,
-      fontFallback: [robotoFont],
-    );
-
-    pdf.addPage(
-      pw.MultiPage(
-        build: (context) => text
-            .split('\n')
-            .map((line) => pw.Paragraph(
-                  text: line.isEmpty ? ' ' : line,
-                  style: style,
-                ))
-            .toList(),
-      ),
-    );
-
-    // ✅ Dosyayı kaydet
     final dir = await getApplicationDocumentsDirectory();
-    final file = File(
-      "${dir.path}/file_${DateTime.now().millisecondsSinceEpoch}.pdf",
-    );
+    final path = "${dir.path}/file_${DateTime.now().millisecondsSinceEpoch}.pdf";
+    final bytes = await doc.save();
+    await File(path).writeAsBytes(bytes);
+    doc.dispose();
 
-    await file.writeAsBytes(await pdf.save());
-
-    return file.path;
+    return path;
   }
 }
